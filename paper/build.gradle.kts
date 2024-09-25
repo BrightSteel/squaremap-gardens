@@ -9,6 +9,15 @@ plugins {
 
 val minecraftVersion = libs.versions.minecraft
 
+repositories {
+
+  maven {
+    name = "CodeMC"
+    url = uri("https://repo.codemc.io/repository/maven-public/")
+  }
+
+}
+
 dependencies {
   paperweight.paperDevBundle(minecraftVersion.map { "$it-R0.1-SNAPSHOT" })
 
@@ -17,6 +26,8 @@ dependencies {
 
   implementation(libs.cloudPaper)
   implementation(libs.bStatsBukkit)
+  compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.2")
+
 }
 
 configurations.mojangMappedServer {

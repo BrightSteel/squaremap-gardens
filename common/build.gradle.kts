@@ -3,6 +3,15 @@ plugins {
   id("org.spongepowered.gradle.vanilla")
 }
 
+repositories {
+
+  maven {
+    name = "CodeMC"
+    url = uri("https://repo.codemc.io/repository/maven-public/")
+  }
+
+}
+
 minecraft {
   version().set(libs.versions.minecraft)
   accessWideners(layout.projectDirectory.file("src/main/resources/squaremap-common.accesswidener"))
@@ -33,6 +42,7 @@ dependencies {
 
   api(platform(libs.configurateBom))
   api(libs.configurateYaml)
+  compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.2")
 
   api(libs.undertow)
 
@@ -46,3 +56,4 @@ dependencies {
     isTransitive = false // depends on guava, provided by mc at runtime
   }
 }
+

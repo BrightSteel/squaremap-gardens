@@ -3,10 +3,9 @@ package xyz.jpenilla.squaremap.common.config;
 import io.leangen.geantyref.TypeToken;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -159,5 +158,33 @@ public final class WorldAdvanced extends AbstractWorldConfig<Advanced> {
                 this.COLOR_OVERRIDES_BLOCKS.put(block, Colors.parseHex(color));
             }
         });
+    }
+
+    public final HashMap<String, Integer> COLOR_OVERRIDES_FURNITURE = new HashMap<>();
+
+    private void colorOverrideFurnitureSettings() {
+        this.COLOR_OVERRIDES_FURNITURE.clear();
+        this.get(
+            new TypeToken<>() {
+            },
+            "color-overrides.furniture",
+            Map.ofEntries(
+                Map.entry("jacaranda_leaves", "#9d00ff")
+            )
+        ).forEach((key, color) -> this.COLOR_OVERRIDES_FURNITURE.put(key, Colors.parseHex(color)));
+    }
+
+    public final HashMap<String, Integer> COLOR_OVERRIDES_NOTE_BLOCK = new HashMap<>();
+
+    private void colorOverrideNoteBlockSettings() {
+        this.COLOR_OVERRIDES_NOTE_BLOCK.clear();
+        this.get(
+            new TypeToken<>() {
+            },
+            "color-overrides.note-block",
+            Map.ofEntries(
+                Map.entry("[14,bass,false]", "#785B4D")
+            )
+        ).forEach((key, color) -> this.COLOR_OVERRIDES_NOTE_BLOCK.put(key, Colors.parseHex(color)));
     }
 }

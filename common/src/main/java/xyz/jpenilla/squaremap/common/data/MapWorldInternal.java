@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.DefaultQualifier;
-import xyz.jpenilla.squaremap.api.LayerProvider;
-import xyz.jpenilla.squaremap.api.MapWorld;
-import xyz.jpenilla.squaremap.api.Registry;
-import xyz.jpenilla.squaremap.api.WorldIdentifier;
+import xyz.jpenilla.squaremap.api.*;
 import xyz.jpenilla.squaremap.common.LayerRegistry;
 import xyz.jpenilla.squaremap.common.Logging;
 import xyz.jpenilla.squaremap.common.config.ConfigManager;
@@ -51,12 +51,14 @@ public abstract class MapWorldInternal implements MapWorld {
     private final LevelBiomeColorData levelBiomeColorData;
     private final VisibilityLimitImpl visibilityLimit;
     private volatile long lastReset = -1;
+    private @Nullable final FurnitureProvider furnitureProvider;
 
     protected MapWorldInternal(
         final ServerLevel level,
         final RenderFactory renderFactory,
         final DirectoryProvider directoryProvider,
-        final ConfigManager configManager
+        final ConfigManager configManager,
+        @Nullable final FurnitureProvider furnitureProvider
     ) {
         this.level = level;
 
@@ -86,6 +88,7 @@ public abstract class MapWorldInternal implements MapWorld {
 
         this.renderManager = RenderManager.create(this, renderFactory);
         this.renderManager.init();
+        this.furnitureProvider = furnitureProvider;
     }
 
     @Override
@@ -96,6 +99,18 @@ public abstract class MapWorldInternal implements MapWorld {
     @Override
     public WorldIdentifier identifier() {
         return Util.worldIdentifier(this.level);
+    }
+
+    @Override
+    public int getFurnitureColor(int x, int y, int z) {
+        if (furnitureProvider == null) {
+            return -1;
+        }
+        var furnitureStore = furnitureProvider.getFurnitureStore(this, x, y, z);
+        if (furnitureStore == null) {
+            return -1;
+        }
+        return blockColors.furnitureColor(furnitureStore.getItemIdentifier());
     }
 
     public RenderManager renderManager() {

@@ -22,7 +22,7 @@ public final class ForgeMapWorld extends MapWorldInternal {
         final DirectoryProvider directoryProvider,
         final ConfigManager configManager
     ) {
-        super(level, renderFactory, directoryProvider, configManager);
+        super(level, renderFactory, directoryProvider, configManager, null);
 
         this.updateMarkers = new UpdateMarkers(this);
     }

@@ -11,6 +11,7 @@ repositories {
   maven("https://maven.neoforged.net/releases/")
   maven("https://maven.architectury.dev/")
   maven("https://repo.jpenilla.xyz/snapshots/")
+  maven("https://repo.codemc.io/repository/maven-public/")
 }
 
 dependencies {

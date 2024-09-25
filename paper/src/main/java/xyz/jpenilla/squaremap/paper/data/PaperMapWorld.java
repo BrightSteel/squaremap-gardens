@@ -33,7 +33,7 @@ public final class PaperMapWorld extends MapWorldInternal {
         final Server server,
         final ConfigManager configManager
     ) {
-        super(level, renderFactory, directoryProvider, configManager);
+        super(level, renderFactory, directoryProvider, configManager, PaperFurnitureProvider.INSTANCE);
 
         if (Folia.FOLIA) {
             this.markerTaskHandler = new FoliaMarkerTaskHandler(level);
