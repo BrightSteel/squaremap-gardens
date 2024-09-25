@@ -1,6 +1,7 @@
 package xyz.jpenilla.squaremap.api;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Represents a world mapped by squaremap.
@@ -21,4 +22,5 @@ public interface MapWorld {
      */
     @NonNull WorldIdentifier identifier();
 
+    int getFurnitureColor(int x, int y, int z);
 }

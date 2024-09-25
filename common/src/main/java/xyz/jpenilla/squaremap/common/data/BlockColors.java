@@ -8,11 +8,12 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.StemBlock;
+import java.util.Optional;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.framework.qual.DefaultQualifier;
@@ -21,12 +22,16 @@ import xyz.jpenilla.squaremap.common.util.Colors;
 @DefaultQualifier(NonNull.class)
 public final class BlockColors {
     private final Reference2IntMap<Block> staticColorMap;
+    private final HashMap<String, Integer> furnitureColorMap;
+    private final HashMap<String, Integer> noteBlockColorMap;
     private final Reference2ObjectMap<Block, DynamicColorGetter> dynamicColorMap;
 
     private BlockColors(final MapWorldInternal world) {
         final Reference2IntMap<Block> staticColors = new Reference2IntOpenHashMap<>(world.advanced().COLOR_OVERRIDES_BLOCKS);
         staticColors.defaultReturnValue(-1);
         this.staticColorMap = Reference2IntMaps.unmodifiable(staticColors);
+        this.furnitureColorMap = world.advanced().COLOR_OVERRIDES_FURNITURE;
+        this.noteBlockColorMap = world.advanced().COLOR_OVERRIDES_NOTE_BLOCK;
 
         this.dynamicColorMap = this.loadDynamicColors();
     }
@@ -56,12 +61,31 @@ public final class BlockColors {
             return staticColor;
         }
 
+        Optional<NoteBlockInstrument> instrument = state.getOptionalValue(NoteBlock.INSTRUMENT);
+        Optional<Integer> note = state.getOptionalValue(NoteBlock.NOTE);
+        Optional<Boolean> powered = state.getOptionalValue(NoteBlock.POWERED);
+        if (instrument.isPresent() && note.isPresent() && powered.isPresent()) {
+            String key = String.format("[%s,%s,%s]", note.get(), instrument.get().getSerializedName(), powered.get());
+            var noteBlockColor = this.noteBlockColorMap.get(key);
+            if (noteBlockColor != null) {
+                return noteBlockColor;
+            }
+        }
+
         final @Nullable DynamicColorGetter func = this.dynamicColorMap.get(block);
         if (func != null) {
             return func.color(state);
         }
 
         return -1;
+    }
+
+    public int furnitureColor(String furnitureIdentifier) {
+        var color = this.furnitureColorMap.get(furnitureIdentifier);
+        if (color == null) {
+            return -1;
+        }
+        return color;
     }
 
     private static int melonAndPumpkinStem(final BlockState state) {

@@ -16,6 +16,15 @@ val plainMinecraftVersion = minecraftVersion.get()
   .mapNotNull { s -> s.toIntOrNull() }
   .joinToString(".")
 
+repositories {
+
+  maven {
+    name = "CodeMC"
+    url = uri("https://repo.codemc.io/repository/maven-public/")
+  }
+
+}
+
 dependencies {
   paperweight.paperDevBundle("${minecraftVersion.get()}.build.+")
 
@@ -24,6 +33,8 @@ dependencies {
 
   implementation(libs.cloudPaper)
   implementation(libs.bStatsBukkit)
+  compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.2")
+  compileOnly(files("libs/GardensFurniture.jar"))
 }
 
 tasks {
@@ -42,6 +53,11 @@ tasks {
       "com.google.inject",
       "org.aopalliance",
     ).forEach(::reloc)
+    exclude("com.gardensmc.gardensfurniture")
+    dependencies {
+      exclude("com.gardensmc.gardensfurniture")
+    }
+
   }
   withType<RunServer>().configureEach {
     runProps(layout, providers).forEach { (key, value) ->

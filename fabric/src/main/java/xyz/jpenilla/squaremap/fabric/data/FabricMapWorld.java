@@ -24,7 +24,7 @@ public final class FabricMapWorld extends MapWorldInternal {
         final ConfigManager configManager,
         final TaskFactory taskFactory
     ) {
-        super(level, renderFactory, directoryProvider, configManager);
+        super(level, renderFactory, directoryProvider, configManager, null);
 
         this.updateMarkers = taskFactory.createUpdateMarkers(this);
     }

@@ -30,7 +30,7 @@ public final class SpongeMapWorld extends MapWorldInternal {
         final ConfigManager configManager,
         final TaskFactory taskFactory
     ) {
-        super(level, renderFactory, directoryProvider, configManager);
+        super(level, renderFactory, directoryProvider, configManager, null);
 
         this.updateMarkers = game.server().scheduler().submit(
             Task.builder()

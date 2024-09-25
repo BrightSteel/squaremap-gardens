@@ -10,6 +10,15 @@ neoForge {
   accessTransformers.from(layout.projectDirectory.file("src/main/resources/squaremap-common-at.cfg"))
 }
 
+repositories {
+
+  maven {
+    name = "CodeMC"
+    url = uri("https://repo.codemc.io/repository/maven-public/")
+  }
+
+}
+
 dependencies {
   api(projects.squaremapApi)
   api("com.google.inject:guice:${libs.versions.guice.get()}:classes") {
@@ -38,6 +47,8 @@ dependencies {
     // Provided by the adventure platform
     exclude("net.kyori", "option")
   }
+  compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.2")
+  compileOnlyApi(files("libs/GardensFurniture.jar"))
 
   api(libs.undertow)
 

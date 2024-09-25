@@ -36,11 +36,7 @@ import org.checkerframework.framework.qual.DefaultQualifier;
 import xyz.jpenilla.squaremap.api.Pair;
 import xyz.jpenilla.squaremap.common.Logging;
 import xyz.jpenilla.squaremap.common.config.Messages;
-import xyz.jpenilla.squaremap.common.data.BiomeColors;
-import xyz.jpenilla.squaremap.common.data.ChunkCoordinate;
-import xyz.jpenilla.squaremap.common.data.Image;
-import xyz.jpenilla.squaremap.common.data.MapWorldInternal;
-import xyz.jpenilla.squaremap.common.data.RegionCoordinate;
+import xyz.jpenilla.squaremap.common.data.*;
 import xyz.jpenilla.squaremap.common.util.ChunkHashMapKey;
 import xyz.jpenilla.squaremap.common.util.Colors;
 import xyz.jpenilla.squaremap.common.util.ConcurrentFIFOLoadingCache;
@@ -88,6 +84,7 @@ public abstract class AbstractRender implements Runnable {
         this.biomeColors = this.mapWorld.config().MAP_BIOMES
             ? new ConcurrentHashMap<>()
             : null; // this should be null if we are not mapping biomes
+
     }
 
     private int maximumActiveChunkRequests() {
@@ -406,6 +403,11 @@ public abstract class AbstractRender implements Runnable {
         if (this.biomeColors != null) {
             color = this.biomeColors.computeIfAbsent(Thread.currentThread(), $ -> new BiomeColors(this.mapWorld, this.chunks))
                 .modifyColorFromBiome(color, chunk, mutablePos);
+        }
+
+        int furnitureColor = mapWorld.getFurnitureColor(mutablePos.getX(), mutablePos.getY(), mutablePos.getZ());
+        if (furnitureColor != -1) {
+            color = furnitureColor;
         }
 
         final int odd = (imgX + imgZ & 1);

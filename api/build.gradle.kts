@@ -16,6 +16,7 @@ dependencies {
   compileOnlyApi(libs.checkerQual)
   compileOnlyApi(platform(libs.adventureBom))
   compileOnlyApi(libs.adventureApi)
+  compileOnlyApi(files("libs/GardensFurniture.jar"))
 }
 
 indra {
