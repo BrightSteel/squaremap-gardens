@@ -2,9 +2,6 @@ package xyz.jpenilla.squaremap.paper.data;
 
 import com.gardensmc.gardensfurniture.store.FurnitureStore;
 import com.gardensmc.gardensfurniture.store.FurnitureStoreHandler;
-import de.tr7zw.nbtapi.NBTChunk;
-import org.bukkit.Chunk;
-import org.bukkit.block.Block;
 import xyz.jpenilla.squaremap.api.BukkitAdapter;
 import xyz.jpenilla.squaremap.api.FurnitureProvider;
 import xyz.jpenilla.squaremap.api.MapWorld;

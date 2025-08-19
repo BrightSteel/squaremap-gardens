@@ -73,8 +73,7 @@ abstract class BuildFrontend : DefaultTask() {
   @get:Internal
   abstract val workingDir: DirectoryProperty
 
-  @get:Input
-  abstract val command: ListProperty<String>
+
 
   @get:Inject
   abstract val exec: ExecOperations
