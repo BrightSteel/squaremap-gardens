@@ -65,6 +65,7 @@ public class WorldManagerImpl implements WorldManager {
 
     public void start() {
         for (final ServerLevel level : this.serverAccess.levels()) {
+            EmptySectionHolder.init(level.palettedContainerFactory());
             this.initWorld(level);
         }
     }
